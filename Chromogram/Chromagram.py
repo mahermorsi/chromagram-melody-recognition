@@ -7,11 +7,12 @@ import librosa.display
 G1_FREQ = 48.9994  # Frequency of G1
 FS = 44100  # Sampling rate
 DURATION = 2.0  # Duration in seconds
-N_FFT = 8192 * 2  # Number of FFT points
+N_FFT = 2**14  # Number of FFT points
 HOP_LENGTH = 512  # Hop length
 WINDOW = 'hann'  # Window function
-GAMMA = 2  # Compression parameter for logarithmic compression
+GAMMA = 10  # Compression parameter for logarithmic compression
 NROOT = 5  # Root parameter for root compression
+WIN_LENGTH = int(N_FFT/4)
 
 # Window overlap = (N_FFT - HOP_LENGTH) / N_FFT
 # For this configuration: overlap = (16384 - 512) / 16384 = 0.96875 or 96.875%
@@ -45,8 +46,8 @@ def load_audio(filepath):
     return y, sr
 
 # Compute the Short-Time Fourier Transform (STFT) of the signal
-def compute_stft(signal, n_fft, hop_length, window):
-    return np.abs(librosa.stft(signal, n_fft=n_fft, hop_length=hop_length, window=window))
+def compute_stft(signal, n_fft, hop_length, window, winLength):
+    return np.abs(librosa.stft(signal, n_fft=n_fft, hop_length=hop_length, window=window, win_length=winLength))
 
 # Convert pitch index to frequency
 def pitch_to_frequency(pitch_index, g1_freq):
@@ -92,7 +93,7 @@ def apply_compression(energies, method='log', gamma=1.0, nroot=5):
         return energies
 
 # Plotting functions
-def plot_signal_and_spectrogram(signal, stft, duration, fs, hop_length):
+def plot_signal_and_spectrogram(signal, stft, duration, fs, hop_length, winLength):
     fig, axs = plt.subplots(2, 1, figsize=(12, 8))
 
     # a. Signal amplitude vs time
@@ -102,7 +103,7 @@ def plot_signal_and_spectrogram(signal, stft, duration, fs, hop_length):
     axs[0].set_ylabel('Amplitude')
 
     # b. Spectrogram
-    img = librosa.display.specshow(librosa.amplitude_to_db(stft, ref=np.max), sr=fs, hop_length=hop_length, x_axis='time', y_axis='log', ax=axs[1])
+    img = librosa.display.specshow(librosa.amplitude_to_db(stft, ref=np.max), sr=fs, hop_length=hop_length, x_axis='time', y_axis='log', ax=axs[1], win_length=winLength)
     fig.colorbar(img, format='%+2.0f dB', ax=axs[1])
     axs[1].set_title('Spectrogram')
 
