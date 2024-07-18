@@ -2,7 +2,7 @@ from Chromagram import *
 
 def main():
     # Generate test sinewaves for G2 and C4
-    frequencies = [97.9988, 261.6]  # G2, C4
+    frequencies = [48.9994]  # G2, C4
     sinewaves = [generate_sinewave(f, DURATION, FS) for f in frequencies]
     combined_signal = np.sum(sinewaves, axis=0)
 
