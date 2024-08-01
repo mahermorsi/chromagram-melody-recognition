@@ -10,9 +10,9 @@ DURATION = 2.0  # Duration in seconds
 N_FFT = 2**14  # Number of FFT points
 HOP_LENGTH = 512  # Hop length
 WINDOW = 'hann'  # Window function
-GAMMA = 10  # Compression parameter for logarithmic compression
+GAMMA = 0.002  # Compression parameter for logarithmic compression
 NROOT = 5  # Root parameter for root compression
-WIN_LENGTH = int(N_FFT/4)
+WIN_LENGTH = int(N_FFT/2)
 
 # Window overlap = (N_FFT - HOP_LENGTH) / N_FFT
 # For this configuration: overlap = (16384 - 512) / 16384 = 0.96875 or 96.875%
@@ -109,10 +109,10 @@ def plot_signal_and_spectrogram(signal, stft, duration, fs, hop_length, winLengt
 
     plt.tight_layout()
 
-def plot_pitch_energies(pitch_energies, note_labels):
+def plot_pitch_energies(pitch_energies, note_labels, cmap):
     fig, ax = plt.subplots(figsize=(12, 12))
 
-    img = ax.imshow(pitch_energies, aspect='auto', origin='lower', interpolation='none')
+    img = ax.imshow(pitch_energies, aspect='auto', origin='lower', interpolation='none', cmap=cmap)
     fig.colorbar(img, ax=ax)
     ax.set_title('Pitch Energies before folding into Chromagram')
     ax.set_xlabel('Time')
