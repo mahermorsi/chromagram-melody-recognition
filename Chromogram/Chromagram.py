@@ -15,7 +15,6 @@ NROOT = 5  # Root parameter for root compression
 WIN_LENGTH = int(N_FFT/2)
 
 # Window overlap = (N_FFT - HOP_LENGTH) / N_FFT
-# For this configuration: overlap = (16384 - 512) / 16384 = 0.96875 or 96.875%
 
 # Chromagram labels for odd and even octaves
 chroma_labels = [
@@ -114,7 +113,7 @@ def plot_pitch_energies(pitch_energies, note_labels, cmap):
 
     img = ax.imshow(pitch_energies, aspect='auto', origin='lower', interpolation='none', cmap=cmap)
     fig.colorbar(img, ax=ax)
-    ax.set_title('Pitch Energies before folding into Chromagram')
+    ax.set_title('Pitch Energies')
     ax.set_xlabel('Time')
     ax.set_ylabel('Pitch Bins')
     ax.set_yticks(np.arange(len(note_labels)))
