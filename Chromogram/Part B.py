@@ -1,8 +1,13 @@
 from Chromagram import *
 from scipy import signal
+
+
 def main():
-    GAMMA = 0.001
+    GAMMA = 0.01
+    N_FFT = 2 ** 14
     WIN_LENGTH = int(N_FFT / 2)
+    FS = 44100
+    WINDOW = 'hann'
 
     combined_signal, fs = librosa.load("G1 3 5.wav")
 
